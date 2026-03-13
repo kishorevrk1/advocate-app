@@ -2,6 +2,7 @@ import axios from 'axios'
 import { supabase } from '../lib/supabase'
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL
+const api = axios.create({ baseURL: API_URL, timeout: 60000 })
 
 export const analyzeCase = async (caseData: {
   category: string
@@ -12,7 +13,7 @@ export const analyzeCase = async (caseData: {
   amountDisputed?: number
 }) => {
   const { data: { user } } = await supabase.auth.getUser()
-  const response = await axios.post(`${API_URL}/api/generate/analyze`, {
+  const response = await api.post('/api/generate/analyze', {
     ...caseData,
     userName: user?.email?.split('@')[0] || 'User',
   })

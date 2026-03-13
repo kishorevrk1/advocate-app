@@ -8,6 +8,7 @@ import { LinearGradient } from 'expo-linear-gradient'
 import { colors } from '../theme/colors'
 import { analyzeCase, saveCase, saveDocument } from '../api/cases'
 import { getCountry, type Country } from '../lib/country'
+import { parseApiError } from '../lib/apiError'
 
 const CATEGORIES = [
   { id: 'deposit', emoji: '🏠', title: 'Security Deposit', subtitle: 'Landlord keeping your money' },
@@ -86,9 +87,10 @@ export default function NewCaseScreen({ navigation }: any) {
 
       navigation.replace('CaseAnalysis', { analysis, caseId: savedCase.id })
     } catch (e: any) {
-      Alert.alert('Error', e.response?.data?.error || e.message || 'Something went wrong')
+      Alert.alert('Analysis Failed', parseApiError(e), [{ text: 'OK' }])
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   if (loading) {

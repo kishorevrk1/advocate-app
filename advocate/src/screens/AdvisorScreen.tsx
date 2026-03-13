@@ -12,6 +12,7 @@ import { colors } from '../theme/colors'
 import { ShieldLogo } from '../components/ui'
 import { sendChatMessage, ChatMessage } from '../api/advisor'
 import { getCountry, COUNTRY_FLAGS, COUNTRY_NAMES, Country } from '../lib/country'
+import { parseApiError } from '../lib/apiError'
 
 const TEMPLATE_CHIPS = [
   { id: 'letter',   label: '📝 Demand Letter',  message: 'I need help drafting a demand letter for my dispute.' },
@@ -77,11 +78,11 @@ export default function AdvisorScreen() {
         nextSteps: res.nextSteps ?? undefined,
       }
       setMessages(prev => [...prev, aiMsg])
-    } catch {
+    } catch (e: any) {
       setMessages(prev => [...prev, {
         id:   `err_${Date.now()}`,
         role: 'assistant',
-        text: 'Something went wrong. Please check your connection and try again.',
+        text: parseApiError(e),
       }])
     }
 

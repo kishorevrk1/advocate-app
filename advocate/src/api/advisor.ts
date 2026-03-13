@@ -1,6 +1,9 @@
 import axios from 'axios'
 
-const API_URL = process.env.EXPO_PUBLIC_API_URL
+const api = axios.create({
+  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  timeout: 60000,
+})
 
 export interface ChatMessage {
   role: 'user' | 'assistant'
@@ -20,7 +23,7 @@ export async function sendChatMessage(
   country: string,
   history: ChatMessage[],
 ): Promise<ChatResponse> {
-  const response = await axios.post(`${API_URL}/api/chat/message`, {
+  const response = await api.post('/api/chat/message', {
     message,
     country,
     messages: history,
