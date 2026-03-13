@@ -1,5 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
-import { getLawsForCase } from '../data/laws'
+import { getLawsForCase, getLawsForCountry } from '../data/laws'
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
@@ -7,6 +7,7 @@ export interface CaseInput {
   category: string
   description: string
   state: string
+  country?: string   // 'US' | 'IN' | 'OTHER' — defaults to 'US'
   opponentName?: string
   amountDisputed?: number
   userName?: string
@@ -50,24 +51,31 @@ You must respond with ONLY valid JSON — no markdown code blocks, no extra text
 Write demand letters in formal business letter format. Be direct, professional, and reference specific laws. Phone scripts should sound natural and confident, not robotic. Never fabricate laws — only cite real laws from the context provided.`
 
 export async function analyzeCase(input: CaseInput): Promise<CaseAnalysis> {
-  const laws = getLawsForCase(input.state, input.category)
+  const country = (input.country || 'US').toUpperCase()
+  const laws = country === 'IN'
+    ? getLawsForCountry('IN', input.category)
+    : getLawsForCase(input.state, input.category)
+
+  const isIndia = country === 'IN'
   const today = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+  const locationLabel = isIndia ? `State: ${input.state}, India` : `State: ${input.state}, USA`
+  const currencySymbol = isIndia ? '₹' : '$'
 
   const userMessage = `Analyze this consumer dispute and generate all required outputs:
 
 **Case Details:**
 - Category: ${input.category}
-- State: ${input.state}
+- Location: ${locationLabel}
 - Situation: ${input.description}
 ${input.opponentName ? `- Opposing party: ${input.opponentName}` : '- Opposing party: [Company/Person Name]'}
-${input.amountDisputed ? `- Amount disputed: $${input.amountDisputed.toLocaleString()}` : ''}
+${input.amountDisputed ? `- Amount disputed: ${currencySymbol}${input.amountDisputed.toLocaleString()}` : ''}
 ${input.userName ? `- Claimant name: ${input.userName}` : '- Claimant name: [YOUR FULL NAME]'}
 - Date: ${today}
 
 **Applicable Laws to Reference:**
 ${laws.map(l => `• ${l}`).join('\n')}
 
-Generate the complete demand letter, phone script, rights explanation, and escalation steps now.`
+Generate the complete demand letter, phone script, rights explanation, and escalation steps now. Use ${isIndia ? 'Indian legal formatting and ₹ currency' : 'US legal formatting and $ currency'}.`
 
   const response = await client.messages.create({
     model: 'claude-sonnet-4-6',

@@ -7,7 +7,7 @@ const VALID_CATEGORIES = ['deposit', 'charges', 'travel', 'invoice', 'product']
 
 router.post('/analyze', async (req: Request, res: Response) => {
   try {
-    const { category, description, state, opponentName, amountDisputed, userName } = req.body
+    const { category, description, state, country, opponentName, amountDisputed, userName } = req.body
 
     // Validate required fields
     if (!category || !description || !state) {
@@ -32,6 +32,7 @@ router.post('/analyze', async (req: Request, res: Response) => {
       category,
       description: description.trim(),
       state: state.toUpperCase(),
+      country: (country || 'US').toUpperCase(),
       opponentName: opponentName?.trim(),
       amountDisputed: amountDisputed ? parseFloat(amountDisputed) : undefined,
       userName: userName?.trim(),

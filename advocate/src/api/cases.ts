@@ -7,6 +7,7 @@ export const analyzeCase = async (caseData: {
   category: string
   description: string
   state: string
+  country?: string
   opponentName?: string
   amountDisputed?: number
 }) => {

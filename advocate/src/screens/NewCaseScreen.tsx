@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   View, Text, StyleSheet, TouchableOpacity, TextInput,
   ScrollView, ActivityIndicator, Alert, KeyboardAvoidingView, Platform
@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { LinearGradient } from 'expo-linear-gradient'
 import { colors } from '../theme/colors'
 import { analyzeCase, saveCase, saveDocument } from '../api/cases'
+import { getCountry, type Country } from '../lib/country'
 
 const CATEGORIES = [
   { id: 'deposit', emoji: '🏠', title: 'Security Deposit', subtitle: 'Landlord keeping your money' },
@@ -24,11 +25,28 @@ const US_STATES = [
   'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY',
 ]
 
+const INDIA_STATES = [
+  'AN','AP','AR','AS','BR','CH','CG','DL','DN','DD',
+  'GA','GJ','HR','HP','JK','JH','KA','KL','LD','MP',
+  'MH','MN','ML','MZ','NL','OD','PY','PB','RJ','SK',
+  'TN','TS','TR','UP','UK','WB',
+]
+
 export default function NewCaseScreen({ navigation }: any) {
   const [step, setStep] = useState(0) // 0=category, 1=details
   const [category, setCategory] = useState('')
   const [description, setDescription] = useState('')
+  const [country, setCountry] = useState<Country>('US')
   const [state, setState] = useState('CA')
+
+  useEffect(() => {
+    getCountry().then(c => {
+      setCountry(c)
+      // Set sensible default state when country loads
+      if (c === 'IN') setState('MH')
+      else setState('CA')
+    })
+  }, [])
   const [opponentName, setOpponentName] = useState('')
   const [amountDisputed, setAmountDisputed] = useState('')
   const [loading, setLoading] = useState(false)
@@ -49,6 +67,7 @@ export default function NewCaseScreen({ navigation }: any) {
         category,
         description,
         state,
+        country,
         opponentName: opponentName || undefined,
         amountDisputed: amountDisputed ? parseFloat(amountDisputed) : undefined,
       })
@@ -139,9 +158,9 @@ export default function NewCaseScreen({ navigation }: any) {
           textAlignVertical="top"
         />
 
-        <Text style={styles.label}>Your state *</Text>
+        <Text style={styles.label}>Your state / region *</Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.stateScroll}>
-          {US_STATES.map((s) => (
+          {(country === 'IN' ? INDIA_STATES : US_STATES).map((s) => (
             <TouchableOpacity
               key={s}
               style={[styles.stateChip, state === s && styles.stateChipSelected]}
