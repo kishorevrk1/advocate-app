@@ -1,0 +1,214 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- Background -->
+    <radialGradient id="bgGrad" cx="45%" cy="40%" r="65%">
+      <stop offset="0%" stop-color="#121230"/>
+      <stop offset="100%" stop-color="#080816"/>
+    </radialGradient>
+
+    <!-- Gavel head: gold -->
+    <linearGradient id="gavelHeadGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F0D080"/>
+      <stop offset="35%" stop-color="#C9A84C"/>
+      <stop offset="75%" stop-color="#A07828"/>
+      <stop offset="100%" stop-color="#7A5A18"/>
+    </linearGradient>
+
+    <!-- Gavel head side face (strike face) -->
+    <linearGradient id="strikeFaceGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F8E8A0"/>
+      <stop offset="100%" stop-color="#C9A84C"/>
+    </linearGradient>
+
+    <!-- Handle: dark wood -->
+    <linearGradient id="handleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6B4A1E"/>
+      <stop offset="50%" stop-color="#3D2808"/>
+      <stop offset="100%" stop-color="#5A3A14"/>
+    </linearGradient>
+
+    <!-- Domain ring: purple → indigo → teal -->
+    <linearGradient id="domainGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C084FC"/>
+      <stop offset="40%" stop-color="#818CF8"/>
+      <stop offset="100%" stop-color="#2DD4BF"/>
+    </linearGradient>
+
+    <!-- Energy glow (indigo core) -->
+    <radialGradient id="energyCoreGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#818CF8" stop-opacity="0.9"/>
+      <stop offset="60%" stop-color="#6366F1" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#6366F1" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Gold impact glow -->
+    <radialGradient id="impactGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#F0D080" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#C9A84C" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Filters -->
+    <filter id="softGlow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="hardGlow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="20" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="domainGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="energyGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="8"/>
+    </filter>
+  </defs>
+
+  <!-- ─── BACKGROUND ─── -->
+  <rect width="1024" height="1024" rx="200" fill="url(#bgGrad)"/>
+
+  <!-- ─── AMBIENT ENERGY AURA (behind everything) ─── -->
+  <ellipse cx="520" cy="490" rx="280" ry="260" fill="url(#energyCoreGrad)" opacity="0.5"/>
+
+  <!-- ─── DOMAIN EXPANSION RINGS ─── -->
+  <!-- Outer broken ring -->
+  <circle cx="512" cy="512" r="445" stroke="url(#domainGrad)" stroke-width="2.5"
+    stroke-dasharray="55 18 30 10" stroke-dashoffset="0"
+    fill="none" opacity="0.55" filter="url(#domainGlow)"/>
+  <!-- Middle ring -->
+  <circle cx="512" cy="512" r="400" stroke="#6366F1" stroke-width="1.5"
+    stroke-dasharray="25 20 10 15" stroke-dashoffset="40"
+    fill="none" opacity="0.3" filter="url(#domainGlow)"/>
+  <!-- Inner ring -->
+  <circle cx="512" cy="512" r="355" stroke="#2DD4BF" stroke-width="1"
+    stroke-dasharray="15 25" stroke-dashoffset="10"
+    fill="none" opacity="0.2"/>
+
+  <!-- ─── CURSED ENERGY CRACKS (8 radiating bolts) ─── -->
+  <!-- Upper-right bolt (main) -->
+  <polygon points="512,512 570,400 595,430 650,320 680,345 615,445 655,435 590,520"
+    fill="#A855F7" opacity="0.65" filter="url(#softGlow)"/>
+  <!-- Lower-left bolt -->
+  <polygon points="512,512 454,625 428,594 372,702 342,677 408,578 368,590 434,504"
+    fill="#7C3AED" opacity="0.55" filter="url(#softGlow)"/>
+  <!-- Upper-left bolt -->
+  <polygon points="512,512 425,450 440,420 355,370 370,340 452,398 445,362 500,480"
+    fill="#2DD4BF" opacity="0.45" filter="url(#softGlow)"/>
+  <!-- Lower-right bolt -->
+  <polygon points="512,512 598,573 582,604 668,652 648,685 568,628 578,664 524,544"
+    fill="#818CF8" opacity="0.5" filter="url(#softGlow)"/>
+  <!-- Top bolt (thin) -->
+  <polygon points="512,512 525,390 540,390 530,300 518,300 506,395 495,390"
+    fill="#C084FC" opacity="0.35"/>
+  <!-- Bottom bolt (thin) -->
+  <polygon points="512,512 499,635 484,634 494,724 506,724 518,630 530,635"
+    fill="#6366F1" opacity="0.3"/>
+  <!-- Right bolt (thin) -->
+  <polygon points="512,512 634,526 634,511 724,520 724,533 630,540 634,554"
+    fill="#2DD4BF" opacity="0.3"/>
+  <!-- Left bolt (thin) -->
+  <polygon points="512,512 390,498 390,513 300,504 300,491 394,484 390,470"
+    fill="#818CF8" opacity="0.25"/>
+
+  <!-- ─── GAVEL (rotated -38°) ─── -->
+  <g transform="rotate(-38, 512, 512)">
+
+    <!-- Impact glow at strike face -->
+    <ellipse cx="650" cy="468" rx="70" ry="55" fill="url(#impactGrad)" filter="url(#hardGlow)" opacity="0.7"/>
+
+    <!-- Gavel head shadow/depth -->
+    <rect x="300" y="426" width="310" height="108" rx="18" fill="#1A0E04" opacity="0.6" transform="translate(6,8)"/>
+
+    <!-- Main gavel head block -->
+    <rect x="300" y="418" width="310" height="108" rx="18" fill="url(#gavelHeadGrad)"/>
+
+    <!-- Gavel head top highlight -->
+    <rect x="300" y="418" width="310" height="22" rx="18" fill="#F8E8A0" opacity="0.25"/>
+    <!-- Gavel head bottom shadow -->
+    <rect x="300" y="490" width="310" height="36" rx="0"
+      style="clip-path: inset(0 0 0 0 round 0 0 18px 18px)"
+      fill="#7A5A18" opacity="0.4"/>
+
+    <!-- Gavel head vertical score marks (craftsmanship detail) -->
+    <line x1="390" y1="418" x2="390" y2="526" stroke="#8B6520" stroke-width="2.5" opacity="0.45"/>
+    <line x1="455" y1="418" x2="455" y2="526" stroke="#8B6520" stroke-width="2.5" opacity="0.35"/>
+    <line x1="520" y1="418" x2="520" y2="526" stroke="#8B6520" stroke-width="2.5" opacity="0.35"/>
+
+    <!-- Strike face (glowing right end) -->
+    <rect x="575" y="418" width="35" height="108" rx="8"
+      fill="url(#strikeFaceGrad)" filter="url(#softGlow)" opacity="0.95"/>
+    <!-- Strike face edge glow -->
+    <rect x="607" y="418" width="8" height="108" rx="4"
+      fill="#FFFACC" opacity="0.7" filter="url(#hardGlow)"/>
+
+    <!-- Butt end (left cap) -->
+    <rect x="300" y="418" width="30" height="108" rx="10"
+      fill="#5A3A14" opacity="0.8"/>
+
+    <!-- Handle collar (neck piece connecting head to handle) -->
+    <rect x="435" y="526" width="70" height="38" rx="6" fill="#4A3010"/>
+    <rect x="435" y="526" width="70" height="10" rx="4" fill="#6B4A1E" opacity="0.5"/>
+
+    <!-- Handle -->
+    <rect x="455" y="564" width="34" height="200" rx="14" fill="url(#handleGrad)"/>
+
+    <!-- Handle highlight -->
+    <rect x="455" y="564" width="10" height="200" rx="7" fill="#8B6030" opacity="0.3"/>
+
+    <!-- Handle grip wrappings (linen tape) -->
+    <rect x="455" y="600" width="34" height="8" rx="3" fill="#2A1A06" opacity="0.55"/>
+    <rect x="455" y="625" width="34" height="8" rx="3" fill="#2A1A06" opacity="0.55"/>
+    <rect x="455" y="650" width="34" height="8" rx="3" fill="#2A1A06" opacity="0.55"/>
+    <rect x="455" y="675" width="34" height="8" rx="3" fill="#2A1A06" opacity="0.55"/>
+    <rect x="455" y="700" width="34" height="8" rx="3" fill="#2A1A06" opacity="0.55"/>
+    <rect x="455" y="725" width="34" height="8" rx="3" fill="#2A1A06" opacity="0.55"/>
+
+    <!-- Cursed energy ring on handle (domain seal) -->
+    <ellipse cx="472" cy="730" rx="28" ry="10"
+      stroke="#818CF8" stroke-width="2.5" fill="none"
+      filter="url(#softGlow)" opacity="0.9"/>
+    <ellipse cx="472" cy="730" rx="22" ry="7"
+      stroke="#C084FC" stroke-width="1" fill="none" opacity="0.6"/>
+
+    <!-- Handle pommel -->
+    <ellipse cx="472" cy="764" rx="20" ry="8" fill="#6B4A1E"/>
+    <ellipse cx="472" cy="762" rx="15" ry="5" fill="#8B6030" opacity="0.5"/>
+
+    <!-- Energy seeping from gavel head (cursed tool activated) -->
+    <ellipse cx="470" cy="470" rx="25" ry="15"
+      fill="#6366F1" opacity="0.35" filter="url(#hardGlow)"/>
+    <ellipse cx="470" cy="472" rx="15" ry="9"
+      fill="#A855F7" opacity="0.5" filter="url(#energyGlow)"/>
+
+  </g>
+
+  <!-- ─── CURSED ENERGY PARTICLES ─── -->
+  <circle cx="260" cy="260" r="6" fill="#2DD4BF" opacity="0.9" filter="url(#softGlow)"/>
+  <circle cx="768" cy="240" r="5" fill="#818CF8" opacity="0.8" filter="url(#softGlow)"/>
+  <circle cx="790" cy="740" r="7" fill="#C084FC" opacity="0.7" filter="url(#softGlow)"/>
+  <circle cx="240" cy="760" r="5" fill="#2DD4BF" opacity="0.8" filter="url(#softGlow)"/>
+  <circle cx="170" cy="500" r="4" fill="#6366F1" opacity="0.7" filter="url(#softGlow)"/>
+  <circle cx="856" cy="490" r="6" fill="#2DD4BF" opacity="0.6" filter="url(#softGlow)"/>
+  <circle cx="380" cy="150" r="4" fill="#818CF8" opacity="0.8" filter="url(#softGlow)"/>
+  <circle cx="650" cy="130" r="5" fill="#C084FC" opacity="0.7" filter="url(#softGlow)"/>
+  <circle cx="840" cy="320" r="3" fill="#2DD4BF" opacity="0.6"/>
+  <circle cx="180" cy="360" r="3" fill="#6366F1" opacity="0.5"/>
+  <circle cx="700" cy="880" r="4" fill="#818CF8" opacity="0.7" filter="url(#softGlow)"/>
+  <circle cx="320" cy="870" r="5" fill="#C084FC" opacity="0.6" filter="url(#softGlow)"/>
+
+  <!-- Larger orb clusters -->
+  <circle cx="760" cy="260" r="12" fill="#6366F1" opacity="0.15" filter="url(#hardGlow)"/>
+  <circle cx="255" cy="755" r="14" fill="#2DD4BF" opacity="0.12" filter="url(#hardGlow)"/>
+
+  <!-- ─── DOMAIN INSCRIPTION (bottom, very subtle) ─── -->
+  <text x="512" y="940"
+    font-family="Georgia, serif" font-size="30" letter-spacing="10"
+    fill="#6366F1" text-anchor="middle" opacity="0.4">
+    DEADLY SENTENCING
+  </text>
+
+  <!-- ─── CENTER ENERGY CORE (where domain converges) ─── -->
+  <circle cx="512" cy="512" r="22" fill="#C9A84C" opacity="0.6" filter="url(#hardGlow)"/>
+  <circle cx="512" cy="512" r="10" fill="#F8E8A0" opacity="0.9" filter="url(#softGlow)"/>
+</svg>
