@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Linking } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { colors } from '../theme/colors'
 
 const LAST_UPDATED = 'March 13, 2026'
 const CONTACT_EMAIL = 'privacy@advocate-app.com'
+const WEB_URL = 'https://advocate-app.netlify.app/privacy-policy'
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <View style={styles.section}>
@@ -30,6 +31,9 @@ export default function PrivacyPolicyScreen({ navigation }: any) {
         </TouchableOpacity>
         <Text style={styles.title}>Privacy Policy</Text>
         <Text style={styles.updated}>Last updated: {LAST_UPDATED}</Text>
+        <TouchableOpacity onPress={() => Linking.openURL(WEB_URL)}>
+          <Text style={styles.webLink}>View online ↗</Text>
+        </TouchableOpacity>
       </View>
 
       <ScrollView style={styles.scroll} contentContainerStyle={styles.content}>
@@ -148,6 +152,7 @@ const styles = StyleSheet.create({
   body:         { fontSize: 14, color: colors.textSecondary, lineHeight: 22, marginBottom: 8 },
   bullet:       { fontSize: 14, color: colors.textSecondary, lineHeight: 22, marginBottom: 4, paddingLeft: 8 },
   email:        { fontSize: 15, color: colors.primary, fontWeight: '600', marginTop: 4 },
+  webLink:      { fontSize: 13, color: colors.primary, marginTop: 4 },
   footer: {
     marginTop: 16, padding: 16,
     backgroundColor: colors.surface,
