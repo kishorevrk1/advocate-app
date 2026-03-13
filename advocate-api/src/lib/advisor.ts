@@ -1,7 +1,17 @@
-import Anthropic from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 import { getLawsForCountry } from '../data/laws'
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+function getClient() {
+  const useGroq = !!process.env.GROQ_API_KEY
+  return {
+    client: new OpenAI(
+      useGroq
+        ? { apiKey: process.env.GROQ_API_KEY, baseURL: 'https://api.groq.com/openai/v1' }
+        : { apiKey: process.env.ANTHROPIC_API_KEY, baseURL: 'https://api.anthropic.com/v1' }
+    ),
+    model: useGroq ? 'llama-3.3-70b-versatile' : 'claude-sonnet-4-6',
+  }
+}
 
 const ADVISOR_SYSTEM = `You are Advocate, an AI legal advisor helping everyday people in India and the USA understand their rights and take action against unfair treatment.
 
@@ -60,22 +70,23 @@ export async function chat(input: ChatInput): Promise<ChatOutput> {
     { role: 'user', content: input.message + contextNote },
   ]
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
+  const { client, model: MODEL } = getClient()
+  const response = await client.chat.completions.create({
+    model: MODEL,
     max_tokens: 2000,
-    system: ADVISOR_SYSTEM,
-    messages,
+    messages: [
+      { role: 'system', content: ADVISOR_SYSTEM },
+      ...messages,
+    ],
+    response_format: { type: 'json_object' },
   })
 
-  const content = response.content[0]
-  if (content.type !== 'text') throw new Error('Unexpected response type')
-
-  const jsonText = content.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+  const text = response.choices[0]?.message?.content || ''
+  const jsonText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
 
   try {
     return JSON.parse(jsonText) as ChatOutput
   } catch {
-    // Graceful fallback if Claude doesn't return valid JSON
-    return { reply: content.text, citations: [], document: null, nextSteps: null }
+    return { reply: text, citations: [], document: null, nextSteps: null }
   }
 }

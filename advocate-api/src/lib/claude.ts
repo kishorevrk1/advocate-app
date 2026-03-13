@@ -1,7 +1,18 @@
-import Anthropic from '@anthropic-ai/sdk'
+import OpenAI from 'openai'
 import { getLawsForCase, getLawsForCountry } from '../data/laws'
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+// Lazy client — reads env vars at call time (after dotenv.config() has run)
+function getClient() {
+  const useGroq = !!process.env.GROQ_API_KEY
+  return {
+    client: new OpenAI(
+      useGroq
+        ? { apiKey: process.env.GROQ_API_KEY, baseURL: 'https://api.groq.com/openai/v1' }
+        : { apiKey: process.env.ANTHROPIC_API_KEY, baseURL: 'https://api.anthropic.com/v1' }
+    ),
+    model: useGroq ? 'llama-3.3-70b-versatile' : 'claude-sonnet-4-6',
+  }
+}
 
 export interface CaseInput {
   category: string
@@ -77,24 +88,23 @@ ${laws.map(l => `• ${l}`).join('\n')}
 
 Generate the complete demand letter, phone script, rights explanation, and escalation steps now. Use ${isIndia ? 'Indian legal formatting and ₹ currency' : 'US legal formatting and $ currency'}.`
 
-  const response = await client.messages.create({
-    model: 'claude-sonnet-4-6',
+  const { client, model: MODEL } = getClient()
+  const response = await client.chat.completions.create({
+    model: MODEL,
     max_tokens: 4000,
-    system: SYSTEM_PROMPT,
-    messages: [{ role: 'user', content: userMessage }],
+    messages: [
+      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'user', content: userMessage },
+    ],
+    response_format: { type: 'json_object' },
   })
 
-  const content = response.content[0]
-  if (content.type !== 'text') {
-    throw new Error('Unexpected response type from Claude API')
-  }
-
-  // Strip any markdown code blocks if Claude adds them despite instructions
-  const jsonText = content.text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
+  const text = response.choices[0]?.message?.content || ''
+  const jsonText = text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim()
 
   try {
     return JSON.parse(jsonText) as CaseAnalysis
   } catch (parseError) {
-    throw new Error(`Failed to parse Claude response as JSON: ${jsonText.substring(0, 200)}`)
+    throw new Error(`Failed to parse response as JSON: ${jsonText.substring(0, 200)}`)
   }
 }
