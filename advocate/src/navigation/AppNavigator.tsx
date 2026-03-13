@@ -12,6 +12,8 @@ import CaseAnalysisScreen from '../screens/CaseAnalysisScreen'
 import DemandLetterScreen from '../screens/DemandLetterScreen'
 import PhoneScriptScreen from '../screens/PhoneScriptScreen'
 import OutcomeTrackerScreen from '../screens/OutcomeTrackerScreen'
+import PrivacyPolicyScreen from '../screens/PrivacyPolicyScreen'
+import TermsOfServiceScreen from '../screens/TermsOfServiceScreen'
 import { colors } from '../theme/colors'
 
 const Tab = createBottomTabNavigator()
@@ -65,7 +67,9 @@ export default function AppNavigator() {
       <Stack.Screen name="CaseAnalysis"   component={CaseAnalysisScreen} />
       <Stack.Screen name="DemandLetter"   component={DemandLetterScreen} />
       <Stack.Screen name="PhoneScript"    component={PhoneScriptScreen} />
-      <Stack.Screen name="OutcomeTracker" component={OutcomeTrackerScreen} />
+      <Stack.Screen name="OutcomeTracker"  component={OutcomeTrackerScreen} />
+      <Stack.Screen name="PrivacyPolicy"   component={PrivacyPolicyScreen} />
+      <Stack.Screen name="TermsOfService"  component={TermsOfServiceScreen} />
     </Stack.Navigator>
   )
 }

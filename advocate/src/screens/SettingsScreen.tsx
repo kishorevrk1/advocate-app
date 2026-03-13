@@ -7,7 +7,7 @@ import { GlassCard } from '../components/ui'
 import { useAuthStore } from '../store/authStore'
 import { checkProStatus, restorePurchases } from '../lib/purchases'
 
-export default function SettingsScreen() {
+export default function SettingsScreen({ navigation }: any) {
   const { user, signOut } = useAuthStore()
   const [isPro, setIsPro] = useState(false)
 
@@ -70,12 +70,18 @@ export default function SettingsScreen() {
         </GlassCard>
 
         <GlassCard style={styles.section}>
-          <Text style={styles.sectionLabel}>LEGAL</Text>
+          <Text style={styles.sectionLabel}>LEGAL & PRIVACY</Text>
           <Text style={styles.legalText}>
-            Advocate provides legal information only, not legal advice.
-            All AI-generated content is for educational purposes only.
-            For complex legal matters, consult a licensed attorney.
+            Advocate provides legal information only, not legal advice. AI-generated content is for educational purposes. Always consult a licensed attorney for important matters.
           </Text>
+          <TouchableOpacity style={styles.linkRow} onPress={() => navigation.navigate('PrivacyPolicy')}>
+            <Text style={styles.linkText}>Privacy Policy</Text>
+            <Text style={styles.linkArrow}>›</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.linkRow} onPress={() => navigation.navigate('TermsOfService')}>
+            <Text style={styles.linkText}>Terms of Service</Text>
+            <Text style={styles.linkArrow}>›</Text>
+          </TouchableOpacity>
         </GlassCard>
 
         <GlassCard style={styles.section}>
@@ -116,7 +122,10 @@ const styles = StyleSheet.create({
   },
   buttonText: { color: colors.primary, fontSize: 15, fontWeight: '600' },
   upgradeHint: { fontSize: 13, color: colors.textMuted, lineHeight: 20, marginTop: 12 },
-  legalText: { fontSize: 13, color: colors.textMuted, lineHeight: 20 },
+  legalText: { fontSize: 13, color: colors.textMuted, lineHeight: 20, marginBottom: 12 },
+  linkRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, borderTopWidth: 1, borderTopColor: colors.border },
+  linkText: { fontSize: 15, color: colors.primary, fontWeight: '500' },
+  linkArrow: { fontSize: 20, color: colors.textMuted },
   signOutButton: {
     backgroundColor: colors.dangerDim, borderRadius: 14, paddingVertical: 18,
     alignItems: 'center', borderWidth: 1, borderColor: colors.danger,
