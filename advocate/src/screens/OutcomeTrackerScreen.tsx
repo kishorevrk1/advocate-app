@@ -59,7 +59,7 @@ export default function OutcomeTrackerScreen({ route, navigation }: any) {
               status: 'resolved', outcome: 'won', resolved_at: new Date().toISOString()
             }).eq('id', caseId)
             Alert.alert('You Won!', 'Your win has been recorded. Share your story to help others!')
-            navigation.navigate('Home')
+            navigation.navigate('Tabs')
           }
         }
       ]

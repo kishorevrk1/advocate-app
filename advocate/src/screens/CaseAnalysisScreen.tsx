@@ -14,7 +14,7 @@ export default function CaseAnalysisScreen({ route, navigation }: any) {
       <LinearGradient colors={['#0F1E3A', colors.background]} style={styles.topGradient} start={{x:0.5,y:0}} end={{x:0.5,y:1}} />
       <SafeAreaView style={styles.safe}>
         <ScrollView contentContainerStyle={styles.content}>
-          <TouchableOpacity onPress={() => navigation.navigate('Home')} style={styles.back}>
+          <TouchableOpacity onPress={() => navigation.navigate('Tabs')} style={styles.back}>
             <Text style={styles.backText}>← Dashboard</Text>
           </TouchableOpacity>
 
